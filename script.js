@@ -14,18 +14,24 @@ const symbols = '~`!@#$%^&*()_-+={[}]|:;"<,>.?/';
 
 let password = "";
 let passwordLength = 10;
-let checkCount = 0;
+let checkCount = 1;
+uppercaseCheck.checked = true;
 handleSlider();
 // set strength circle color to grey 
+setIndicator("#ccc");
 
 // Set Password Length 
 function handleSlider() {
     inputSlider.value = passwordLength;
     lengthDisplay.innerText = passwordLength;
+    const min = inputSlider.min;
+    const max = inputSlider.max;
+    inputSlider.style.backgroundSize = ((passwordLength - min) * 100/(max -min)) + "% 100%";
 }
 
 function setIndicator(color) {
     indicator.style.backgroundColor = color;
+    indicator.style.boxShadow = `0px 0px 12px 1px ${color}`;
 }
 
 function getRndInteger(min, max) {
@@ -132,7 +138,7 @@ copyBtn.addEventListener('click', () => {
 
 generation.addEventListener('click', () => {
     // None of the checkbox are selected 
-    if(checkCount == 0) return;
+    if(checkCount <= 0) return;
 
     if(passwordLength < checkCount) {
         passwordLength = checkCount;
@@ -142,7 +148,7 @@ generation.addEventListener('click', () => {
     // Let's start the journey to find new password
     console.log("Starting the Journey");
     // Remove old password 
-    password = "";
+    if(password.length) password = "";
 
     // Let's put the stuff mentioned by checkboxes
     // if(uppercaseCheck.checked) {
@@ -159,6 +165,7 @@ generation.addEventListener('click', () => {
     // }
 
     let funcArr = [];
+
     if(uppercaseCheck.checked)
         funcArr.push(generateUpperCase);
 
